@@ -1,4 +1,9 @@
+"""Setup module"""
 from setuptools import setup, find_packages
+
+# Use a context manager to open the README file
+with open("README.md", encoding="utf-8") as f:
+    long_description = f.read()
 
 setup(
     name="gitlab_projects_downloader",
@@ -24,8 +29,8 @@ setup(
     },
     author="Alberto Barrago(alBz)",
     author_email="alberto.barrago@gmail.com",
-    description="A simple service for download from gitlab your projects in tgz",
-    long_description=open("README.md").read(),
+    description="A simple service for downloading your projects from GitLab in tgz format",
+    long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/AlbertoBarrago/gitlab_projects_exporter",
     classifiers=[
