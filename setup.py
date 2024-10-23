@@ -1,7 +1,6 @@
 """Setup module"""
 from setuptools import setup, find_packages
 
-# Use a context manager to open the README file
 with open("README.md", encoding="utf-8") as f:
     long_description = f.read()
 
