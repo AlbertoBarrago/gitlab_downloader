@@ -27,7 +27,7 @@ setup(
             'gitlab-exporter=gitlab_projects_downloader.__init__:main',
         ],
     },
-    author="Alberto Barrago(alBz)",
+    author="alBz",
     author_email="alberto.barrago@gmail.com",
     description="A simple service for downloading your projects from GitLab in tgz format",
     long_description=long_description,
