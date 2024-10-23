@@ -1,5 +1,6 @@
 """Gitlab Fetch Projects and Download"""
-from gitlab_projects_downloader.main import GitlabExporter
+from gitlab_downloader.main import GitlabExporter
+
 
 def main():
     """

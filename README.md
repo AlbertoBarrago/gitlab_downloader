@@ -1,10 +1,14 @@
-# Gitlab Downloader Service
-Download from gitlab your projects with v4 API refer to: 
-https://docs.gitlab.com/ee/api/rest/
+# gitlab-downloader 
+
+
+<p align="left">
+         <a href="https://pypi.python.org/pypi/prefect-gitlab/" alt="PyPI version">
+        <img alt="PyPI" src="https://img.shields.io/pypi/v/gitlab-projects-downloader?color=26272B&labelColor=090422"></a>
+</p>
 
 ### Motivation
+Every day someone ask me to export something from X and import into Y  from gitlab; so...
 
-Every day someone ask me to export something from X and import into Y (gitlab env) so...
 ## ENV 
 ```dotenv
 GITLAB_URL=""
@@ -14,7 +18,7 @@ EXPORT_FOLDER="./gitlab_exports"
 
 ## Installation
 
-You can install the package via pip:
+You can install the package via `PyPi`:
 
 ```bash
 pip install gitlab-projects-downloader

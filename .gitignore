@@ -6,4 +6,4 @@ dist
 gitlab_projects_downloader.egg-info
 .DS_Store
 .idea/
-gitlab_projects_downloader/__pycache__/
+gitlab_downloader/__pycache__/

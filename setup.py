@@ -6,7 +6,7 @@ with open("README.md", encoding="utf-8") as f:
 
 setup(
     name="gitlab_projects_downloader",
-    version="0.2.0",
+    version="0.3.0",
     packages=find_packages(),
     install_requires=[
         "requests",
@@ -23,7 +23,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'gitlab-exporter=gitlab_projects_downloader.__init__:main',
+            'gitlab_downloader=gitlab_downloader.__init__:main',
         ],
     },
     author="alBz",
@@ -36,6 +36,7 @@ setup(
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
+        "Topic :: Software Development :: Services",
     ],
     python_requires='>=3.7',
 )
