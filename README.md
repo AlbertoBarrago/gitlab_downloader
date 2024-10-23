@@ -14,8 +14,9 @@ EXPORT_FOLDER="./gitlab_exports"
 ```
 
 ##### START SCRIPT 
+After set `.env`
 ```bash 
-python3 main.py
+python3 gitlab-exporter
 ```
 
 _Instructions_

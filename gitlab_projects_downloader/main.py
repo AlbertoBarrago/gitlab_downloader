@@ -1,4 +1,4 @@
-"""utils"""
+"""Gitlab Projects Downloader"""
 import os
 import time
 import requests
@@ -19,7 +19,6 @@ class GitlabExporter:
     """
     Gitlab Exporter
     """
-
     def __init__(self, project_name):
         self.version = 1.0
         self.project_name = project_name

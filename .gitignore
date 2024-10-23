@@ -1,3 +1,6 @@
 .env
 .venv
+build
 gitlab_exports
+dist
+gitlab_projects_downloader.egg-info
