@@ -1,7 +1,7 @@
 """utils"""
 import os
-import requests
 import time
+import requests
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -10,17 +10,21 @@ GITLAB_URL = os.getenv("GITLAB_URL")
 ACCESS_TOKEN = os.getenv("ACCESS_TOKEN")
 EXPORT_FOLDER = os.getenv("EXPORT_FOLDER")
 
-
 headers = {
-    "Private-Token": ACCESS_TOKEN # Headers for the API request
+    "Private-Token": ACCESS_TOKEN  # Headers for the API request
 }
 
-class Exporter:
-    def __init__(self, **kwargs):
-        self.version = 1.0
-        self.project_id = kwargs['project_id']
-        self.project_name = kwargs['project_name']
 
+class GitlabExporter:
+    """
+    Gitlab Exporter
+    """
+
+    def __init__(self, project_name):
+        self.version = 1.0
+        self.project_name = project_name
+        self.project_id = None
+        self.project_name_safe = None
 
     def start_project_export(self):
         """
@@ -28,14 +32,13 @@ class Exporter:
         :return:
         """
         export_url = f"{GITLAB_URL}/api/v4/projects/{self.project_id}/export"
-        response = requests.post(export_url, headers=headers)
+        response = requests.post(export_url, headers=headers, timeout=10)
         if response.status_code == 202:
             print(f"Project export initiated for project ID {self.project_id}.")
             return True
-        else:
-            print(f"Failed to initiate export for project ID {self.project_id}: {response.text}")
-            return False
 
+        print(f"Failed to initiate export for project ID {self.project_id}: {response.text}")
+        return False
 
     def check_export_status(self):
         """
@@ -43,20 +46,19 @@ class Exporter:
         :return:
         """
         status_url = f"{GITLAB_URL}/api/v4/projects/{self.project_id}/export"
-        response = requests.get(status_url, headers=headers)
+        response = requests.get(status_url, headers=headers, timeout=10)
 
         if response.status_code == 200:
             export_status = response.json().get("export_status", "none")
             if export_status == "finished":
                 download_link = response.json().get("_links", {}).get("api_url")
                 return {"status": "finished", "download_link": download_link}
-            else:
-                print(f"Current export status: {export_status}")
-                return {"status": export_status}
-        else:
-            print(f"Failed to check export status for project ID {self.project_id}: {response.text}")
-            return None
 
+            print(f"Current export status: {export_status}")
+            return {"status": export_status}
+
+        print(f"Failed to check export status for project ID {self.project_id}: {response.text}")
+        return None
 
     def download_export(self):
         """
@@ -64,7 +66,7 @@ class Exporter:
         :return:
         """
         download_url = f"{GITLAB_URL}/api/v4/projects/{self.project_id}/export/download"
-        response = requests.get(download_url, headers=headers, stream=True)
+        response = requests.get(download_url, headers=headers, stream=True, timeout=10)
 
         if response.status_code == 200:
             file_name = f"{EXPORT_FOLDER}/{self.project_name}_export.tar.gz"
@@ -73,10 +75,33 @@ class Exporter:
                     file.write(chunk)
             print(f"Project {self.project_name} exported and saved as {file_name}")
             return file_name
-        else:
-            print(f"Failed to download export for project {self.project_name}: {response.text}")
-            return None
 
+        print(f"Failed to download export for project {self.project_name}: {response.text}")
+        return None
+
+    def get_project_by_name(self):
+        """
+        Get project by name.
+        :return:
+        """
+        page = 1
+        while True:
+            response = requests.get(
+                f"{GITLAB_URL}/api/v4/projects?search={self.project_name}&per_page=100&page={page}",
+                headers=headers,
+                timeout=10
+            )
+            if response.status_code != 200:
+                print(f"Failed to fetch projects: {response.status_code} {response.text}")
+                return None
+            projects = response.json()
+            if not projects:
+                print(f"Project '{self.project_name}' not found.")
+                return None
+            for project in projects:
+                if self.project_name in (project["name"], project["path_with_namespace"]):
+                    return project
+            page += 1
 
     def export_project_by_name(self):
         """
@@ -86,20 +111,20 @@ class Exporter:
         if not os.path.exists(EXPORT_FOLDER):
             os.makedirs(EXPORT_FOLDER)
 
-        project = self.get_project_by_name(self.project_name)
+        project = self.get_project_by_name()
         if project:
-            project_id = project["id"]
-            project_name_safe = project["path_with_namespace"].replace("/", "_")
+            self.project_id = project["id"]
+            self.project_name_safe = project["path_with_namespace"].replace("/", "_")
 
-            if self.start_project_export(self.project_id):
+            if self.start_project_export():
                 max_retries = 10
                 retries = 0
                 while retries < max_retries:
-                    status = self.check_export_status(self.project_id)
+                    status = self.check_export_status()
                     if status and status["status"] == "finished":
-                        self.download_export(project_id, project_name_safe)
+                        self.download_export()
                         break
-                    elif status["status"] in ["queued", "started"]:
+                    if status["status"] in ["queued", "started"]:
                         time.sleep(30)
                         retries += 1
                     else:
@@ -107,5 +132,3 @@ class Exporter:
                         break
                 if retries == max_retries:
                     print("Exceeded maximum retries for export status check.")
-            else:
-                print(f"Failed to start export for {project_name}.")
