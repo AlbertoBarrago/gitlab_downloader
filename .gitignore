@@ -4,3 +4,6 @@ build
 gitlab_exports
 dist
 gitlab_projects_downloader.egg-info
+.DS_Store
+.idea/
+gitlab_projects_downloader/__pycache__/
