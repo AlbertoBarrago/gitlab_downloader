@@ -2,6 +2,10 @@
 from gitlab_projects_downloader.main import GitlabExporter
 
 def main():
+    """
+    Main function
+    :return:
+    """
     project_name_to_export = input("Project name: ")
     exporter = GitlabExporter(project_name_to_export)
     exporter.export_project_by_name()
