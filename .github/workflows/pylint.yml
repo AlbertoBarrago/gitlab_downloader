@@ -19,22 +19,22 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        python3 -m pip install --upgrade pip
-        python3 -m pip install requests python-dotenv
-        python3 -m pip install pylint
-        python3 -m pip install twine
-        python3 -m pip install wheel
-        python3 -m pip install setuptools  # Ensure setuptools is installed
-        python3 -m pip install build  # Install the build package
+        python -m pip install --upgrade pip
+        python -m pip install requests python-dotenv
+        python -m pip install pylint
+        python -m pip install twine
+        python -m pip install wheel
+        python -m pip install setuptools
+        python -m pip install build
     - name: Analyzing the code with pylint
       run: |
         pylint --disable=E0401 $(git ls-files '*.py')
     - name: Build the package
       run: |
-        python3 -m build  # Use the build package to create the distribution
+        python -m build
     - name: Publish to PyPI
       env:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
       run: |
-        twine upload dist/* --verbose
+        python -m twine upload --skip-existing dist/*
