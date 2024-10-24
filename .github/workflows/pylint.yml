@@ -24,11 +24,13 @@ jobs:
         pip install pylint
         pip install twine
         pip install wheel
+        pip list | grep wheel
     - name: Analyzing the code with pylint
       run: |
         pylint --disable=E0401 $(git ls-files '*.py')
     - name: Build the package
       run: |
+        python -m pip install .
         python setup.py sdist bdist_wheel
     - name: Publish to PyPI
       env:
