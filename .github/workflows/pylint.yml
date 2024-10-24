@@ -3,7 +3,7 @@ name: Pylint and Deploy to PyPI
 on:
   push:
     tags:
-      - 'v*'  # Trigger on version tags (e.g., v1.0, v2.0.1)
+      - 'v*'
 
 jobs:
   build:
@@ -22,16 +22,17 @@ jobs:
         python -m pip install --upgrade pip
         pip install requests python-dotenv
         pip install pylint
-        pip install twine  # Add Twine for uploading to PyPI
+        pip install twine
+        pip install wheel
     - name: Analyzing the code with pylint
       run: |
         pylint --disable=E0401 $(git ls-files '*.py')
     - name: Build the package
       run: |
-        python setup.py sdist bdist_wheel  # Build source and wheel distributions
+        python setup.py sdist bdist_wheel
     - name: Publish to PyPI
       env:
-        TWINE_USERNAME: __token__  # For PyPI token-based authentication
-        TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}  # Your PyPI token from GitHub secrets
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
       run: |
         twine upload dist/*  # Upload all distributions to PyPI
