@@ -8,11 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment:
-      name: pypi
-    permissions:
-      id-token: write
-      contents: read
+    environment: pypi
     strategy:
       matrix:
         python-version: ["3.12"]
@@ -38,8 +34,5 @@ jobs:
       run: |
         python -m build
     - name: Publish to PyPI
-      env:
-        TWINE_USERNAME: __token__
-        TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
       run: |
         python -m twine upload --skip-existing dist/*
