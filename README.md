@@ -1,5 +1,5 @@
 # gitlab-downloader 
-
+[![Pylint and Deploy to PyPI](https://github.com/AlbertoBarrago/gitlab_downloader/actions/workflows/pylint.yml/badge.svg)](https://github.com/AlbertoBarrago/gitlab_downloader/actions/workflows/pylint.yml)
 
 <p align="left">
          <a href="https://pypi.python.org/pypi/prefect-gitlab/" alt="PyPI version">
