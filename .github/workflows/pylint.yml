@@ -1,6 +1,10 @@
-name: Pylint
+name: Pylint and Release to PyPI
 
-on: [push]
+on:
+  push:
+    tags:
+      - 'v*'  # This will trigger on tag version pushed
+  workflow_dispatch:  # Allows manual triggering of the workflow
 
 jobs:
   build:
@@ -9,17 +13,25 @@ jobs:
       matrix:
         python-version: ["3.8", "3.9", "3.10"]
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install requests python-dotenv
-        pip install pylint
-    - name: Analysing the code with pylint
-      run: |
-        pylint --disable=E0401 $(git ls-files '*.py')
-
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests python-dotenv
+          pip install pylint
+          pip install twine  # Install Twine for uploading to PyPI
+      - name: Analysing the code with pylint
+        run: |
+          pylint --disable=E0401 $(git ls-files '*.py')
+      - name: Build and push to PyPI
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          python setup.py sdist bdist_wheel  # Build the package
+          twine upload dist/*  # Upload the package to PyPI
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
