@@ -2,8 +2,6 @@ name: Pylint and Deploy to PyPI
 
 on:
   push:
-    tags:
-      - 'v*'
 
 jobs:
   build:
