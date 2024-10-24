@@ -20,20 +20,21 @@ jobs:
     - name: Install dependencies
       run: |
         python3 -m pip install --upgrade pip
-        pip install requests python-dotenv
-        pip install pylint
-        pip install twine
-        pip install wheel
-        pip install setuptools
+        python3 -m pip install requests python-dotenv
+        python3 -m pip install pylint
+        python3 -m pip install twine
+        python3 -m pip install wheel
+        python3 -m pip install setuptools  # Ensure setuptools is installed
+        python3 -m pip install build  # Install the build package
     - name: Analyzing the code with pylint
       run: |
         pylint --disable=E0401 $(git ls-files '*.py')
     - name: Build the package
       run: |
-        python3 setup.py sdist bdist_wheel
+        python3 -m build  # Use the build package to create the distribution
     - name: Publish to PyPI
       env:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
       run: |
-        python3 twine upload dist/* --verbose 
+        twine upload dist/* --verbose
