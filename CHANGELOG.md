@@ -10,3 +10,6 @@
 
 ## v0.4.0
 - Added test :P  
+
+## v0.5.0
+- Working on pipe for CI/CD
