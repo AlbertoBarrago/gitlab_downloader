@@ -24,7 +24,7 @@ jobs:
         pip install pylint
         pip install twine
         pip install wheel
-        pip list | grep wheel
+        pip install setuptools
     - name: Analyzing the code with pylint
       run: |
         pylint --disable=E0401 $(git ls-files '*.py')
