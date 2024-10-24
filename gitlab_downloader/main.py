@@ -11,7 +11,7 @@ ACCESS_TOKEN = os.getenv("ACCESS_TOKEN")
 EXPORT_FOLDER = os.getenv("EXPORT_FOLDER")
 
 headers = {
-    "Private-Token": ACCESS_TOKEN  # Headers for the API request
+    "Private-Token": ACCESS_TOKEN
 }
 
 

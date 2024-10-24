@@ -7,3 +7,6 @@
 ## v0.3.0
 - Updated README.md 
 - Stable Version
+
+## v0.4.0
+- Added test :P  
