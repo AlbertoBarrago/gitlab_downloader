@@ -13,3 +13,6 @@
 
 ## v0.5.0
 - Working on pipe for CI/CD
+
+- ## v0.6.0
+- Updated README and improved code
