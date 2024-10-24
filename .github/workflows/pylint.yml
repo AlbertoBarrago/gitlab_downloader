@@ -35,6 +35,9 @@ jobs:
     - name: Build the package
       run: |
         python -m build
+    - name: Test secrets (print the name of the secret)
+      run: |
+        echo "TWINE_PASSWORD is set to: ${{ secrets.PYPI_TOKEN }}"
     - name: Publish to PyPI
       env:
         TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
