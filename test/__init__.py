@@ -1,3 +1,6 @@
+"""
+    Init test
+"""
 import unittest
 from test_gitlab_exporter import TestExportProject
 
