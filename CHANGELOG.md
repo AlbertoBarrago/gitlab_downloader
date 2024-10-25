@@ -16,3 +16,6 @@
 
 - ## v0.6.0
 - Updated README and improved code
+
+- ## v1.0.0
+- Updated test with right folders architecture
