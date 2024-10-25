@@ -7,3 +7,4 @@ gitlab_projects_downloader.egg-info
 .DS_Store
 .idea/
 gitlab_downloader/__pycache__/
+test/__pycache__/
