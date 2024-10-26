@@ -14,12 +14,15 @@ EXPORT_FOLDER="./gitlab_exports"
 ```
 
 ## Installation
-
 You can install the package via `PyPi`:
 
 ```bash
 pip install gitlab-projects-downloader
 ```
 
+## Docker 
+```bash 
+ docker run --rm -it ghcr.io/albertobarrago/gitlab-downloader-ghcr:latest
+```
 
-🍕 ENJOY 
+Enjoy 🚀 
